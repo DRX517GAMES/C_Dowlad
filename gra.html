@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>C - GRA</title>
+    <style>
+        body { 
+            background: #000; 
+            color: #ff6600; 
+            font-family: 'Arial Black', sans-serif; 
+            margin: 0; 
+            overflow: hidden; 
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        #wesprzyj { 
+            background: #ff6600; 
+            color: #000; 
+            border: none; 
+            padding: 15px 25px; 
+            font-weight: bold; 
+            border-radius: 10px; 
+            font-size: 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            display: inline-block;
+            align-self: center;
+        }
+        #wynik { font-size: 70px; margin: 20px 0; }
+        #gra-kontener { 
+            flex-grow: 1;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        #kurczak { 
+            font-size: 150px; 
+            cursor: pointer; 
+            user-select: none; 
+            transition: transform 0.05s; 
+            display: inline-block;
+        }
+        @keyframes obrot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .kreci-sie { animation: obrot 0.4s linear infinite; }
+    </style>
+</head>
+<body>
+
+    <button id="wesprzyj">DOŁADUJ KONTO (1 PLN)</button>
+    <div id="wynik">0</div>
+    
+    <div id="gra-kontener">
+        <div id="kurczak" class="kreci-sie">🐔</div>
+    </div>
+
+    <audio id="wybuch" src="https://www.soundjay.com/mechanical/sounds/explosion-01.mp3"></audio>
+
+    <script>
+        let punkty = 0;
+        const kurczak = document.getElementById('kurczak');
+        const wynikDisplay = document.getElementById('wynik');
+        const dzwiek = document.getElementById('wybuch');
+        const przyciskWesprzyj = document.getElementById('wesprzyj');
+
+        // Klikanie w kurczaka
+        kurczak.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            punkty++;
+            wynikDisplay.innerText = punkty;
+            
+            // Reset i odtworzenie dźwięku
+            dzwiek.currentTime = 0;
+            dzwiek.play().catch(() => {}); 
+
+            // Efekt kliknięcia
+            kurczak.style.transform = "scale(0.8)";
+            setTimeout(() => { kurczak.style.transform = "scale(1)"; }, 50);
+        });
+
+        // Obsługa Tiply
+        przyciskWesprzyj.addEventListener('click', () => {
+            window.open("https://tipply.pl/@drx517", "_blank");
+        });
+    </script>
+</body>
+</html>
