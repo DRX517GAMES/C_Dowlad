@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>C</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { background: #000; color: #ff6600; font-family: 'Arial Black', sans-serif; margin: 0; overflow: hidden; text-align: center; }
+        #wesprzyj { position: absolute; top: 10px; left: 10px; background: #ff6600; color: #000; border: none; padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; z-index: 100; }
+        #wynik { font-size: 40px; margin-top: 60px; }
+        #gra-kontener { display: flex; justify-content: center; align-items: center; height: 70vh; }
+        #kurczak { font-size: 100px; cursor: pointer; user-select: none; display: inline-block; }
+        @keyframes obrot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .kreci-sie { animation: obrot 0.5s linear infinite; }
+    </style>
+</head>
+<body>
+
+    <button id="wesprzyj">WESPRZYJ</button>
+    <div id="wynik">0</div>
+    
+    <div id="gra-kontener">
+        <div id="kurczak" class="kreci-sie">🐔</div>
+    </div>
+
+    <audio id="wybuch" src="https://www.soundjay.com/mechanical/sounds/explosion-01.mp3"></audio>
+
+    <script>
+        let punkty = 0;
+        const kurczak = document.getElementById('kurczak');
+        const wynikDisplay = document.getElementById('wynik');
+        const dzwiek = document.getElementById('wybuch');
+        const przyciskWesprzyj = document.getElementById('wesprzyj');
+
+        // Kliknięcie w kurczaka
+        kurczak.addEventListener('pointerdown', () => {
+            punkty++;
+            wynikDisplay.innerText = punkty;
+            
+            // Restart i odtworzenie dźwięku
+            dzwiek.currentTime = 0;
+            dzwiek.play();
+
+            // Efekt wizualny kliknięcia
+            kurczak.style.transform = "scale(1.5)";
+            setTimeout(() => { kurczak.style.transform = ""; }, 100);
+        });
+
+        // Przycisk Wesprzyj
+        przyciskWesprzyj.addEventListener('click', () => {
+            if (confirm("Czy chcesz przekazać 1 zł na numer 517 095 803?")) {
+                // Automatyczne otwarcie SMSa z prośbą o przelew (BLIK na telefon)
+                window.location.href = "sms:517095803?body=Hej, chce przelac 1zl za gre C!";
+                alert("Dzięki! Możesz teraz wysłać SMS lub zrobić przelew BLIK na ten numer.");
+            }
+        });
+
+        // Rejestracja PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
