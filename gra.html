@@ -6,8 +6,11 @@
     <title>C - GRA</title>
     <style>
         body { 
-            background: #000; 
-            color: #ff6600; 
+            /* Ładne niebo z chmurami */
+            background: #87CEEB;
+            background-image: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
+            background-attachment: fixed;
+            color: #000; 
             font-family: 'Arial Black', sans-serif; 
             margin: 0; 
             overflow: hidden; 
@@ -16,40 +19,61 @@
             flex-direction: column;
             height: 100vh;
         }
-        #wesprzyj { 
-            background: #ff6600; 
-            color: #000; 
-            border: none; 
-            padding: 15px 25px; 
-            font-weight: bold; 
-            border-radius: 10px; 
-            font-size: 20px;
-            margin-top: 20px;
-            cursor: pointer;
-            display: inline-block;
-            align-self: center;
+
+        /* Chmury jako dekoracja w tle */
+        body::before {
+            content: "☁️"; font-size: 100px; position: absolute; top: 10%; left: 10%; opacity: 0.5; z-index: -1;
         }
-        #wynik { font-size: 70px; margin: 20px 0; }
+        body::after {
+            content: "☁️"; font-size: 120px; position: absolute; top: 40%; right: 15%; opacity: 0.4; z-index: -1;
+        }
+
+        /* Przycisk w lewym górnym rogu */
+        #wesprzyj { 
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #ff6600; 
+            color: #fff; 
+            border: 2px solid #fff; 
+            padding: 10px 20px; 
+            font-weight: bold; 
+            border-radius: 50px; 
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        #wynik { 
+            font-size: 80px; 
+            margin-top: 60px; 
+            text-shadow: 2px 2px #fff;
+        }
+
         #gra-kontener { 
             flex-grow: 1;
             display: flex; 
             justify-content: center; 
             align-items: center; 
         }
+
         #kurczak { 
             font-size: 150px; 
             cursor: pointer; 
             user-select: none; 
             transition: transform 0.05s; 
             display: inline-block;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
         }
+
         @keyframes obrot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .kreci-sie { animation: obrot 0.4s linear infinite; }
     </style>
 </head>
 <body>
 
-    <button id="wesprzyj">DOŁADUJ KONTO (1 PLN)</button>
+    <button id="wesprzyj">WESPRZYJ</button>
     <div id="wynik">0</div>
     
     <div id="gra-kontener">
@@ -65,22 +89,18 @@
         const dzwiek = document.getElementById('wybuch');
         const przyciskWesprzyj = document.getElementById('wesprzyj');
 
-        // Klikanie w kurczaka
+        // Klikanie
         kurczak.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             punkty++;
             wynikDisplay.innerText = punkty;
-            
-            // Reset i odtworzenie dźwięku
             dzwiek.currentTime = 0;
             dzwiek.play().catch(() => {}); 
-
-            // Efekt kliknięcia
             kurczak.style.transform = "scale(0.8)";
             setTimeout(() => { kurczak.style.transform = "scale(1)"; }, 50);
         });
 
-        // Obsługa Tiply
+        // Link Tiply
         przyciskWesprzyj.addEventListener('click', () => {
             window.open("https://tipply.pl/@drx517", "_blank");
         });
